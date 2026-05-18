@@ -8,6 +8,7 @@
 		<TargetFramework>net462</TargetFramework>
 		<OutputType>Exe</OutputType>
 		<OutputPath>..\bin\$(Configuration)</OutputPath>
+		<RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
 		<PlatformTarget Condition="'$(Platform)' == 'x86'">x86</PlatformTarget>
 		<PlatformTarget Condition="'$(Platform)' == 'x64'">x64</PlatformTarget>
 		<PlatformTarget Condition="'$(Platform)' == '' or '$(Platform)' == 'AnyCPU'">AnyCPU</PlatformTarget>

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<UseWindowsForms>false</UseWindowsForms>
+		<Description>.NET Assemblies Dumper CLI x86 Wrapper</Description>
+	</PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net462</TargetFramework>
+		<PlatformTarget>x86</PlatformTarget>
+		<OutputType>Exe</OutputType>
+		<OutputPath>..\bin\$(Configuration)</OutputPath>
+		<AssemblyName>ExtremeDumper.CLI-x86</AssemblyName>
+	</PropertyGroup>
+	<Target Name="ClearReferenceCopyLocalPaths" AfterTargets="ResolveAssemblyReferences">
+		<ItemGroup>
+			<ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" />
+		</ItemGroup>
+	</Target>
+	<ItemGroup>
+		<ProjectReference Include="..\ExtremeDumper.CLI\ExtremeDumper.CLI.csproj" />
+	</ItemGroup>
+	<Import Project="..\ExtremeDumper.Common.props" />
+</Project>

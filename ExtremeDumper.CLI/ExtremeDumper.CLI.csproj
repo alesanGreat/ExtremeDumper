@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<UseWindowsForms>false</UseWindowsForms>
+		<Description>.NET Assemblies Dumper CLI</Description>
+		<Platforms>AnyCPU;x86;x64</Platforms>
+	</PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net462</TargetFramework>
+		<OutputType>Exe</OutputType>
+		<OutputPath>..\bin\$(Configuration)</OutputPath>
+		<PlatformTarget Condition="'$(Platform)' == 'x86'">x86</PlatformTarget>
+		<PlatformTarget Condition="'$(Platform)' == 'x64'">x64</PlatformTarget>
+		<PlatformTarget Condition="'$(Platform)' == '' or '$(Platform)' == 'AnyCPU'">AnyCPU</PlatformTarget>
+		<Prefer32Bit>false</Prefer32Bit>
+	</PropertyGroup>
+	<ItemGroup>
+		<Content Include="..\ExtremeDumper.LoaderHook\bin\Win32\$(Configuration)\ExtremeDumper.LoaderHook.dll">
+			<Link>ExtremeDumper.LoaderHook.dll</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>costura32\ExtremeDumper.LoaderHook.dll</TargetPath>
+		</Content>
+		<Content Include="..\ExtremeDumper.LoaderHook\bin\x64\$(Configuration)\ExtremeDumper.LoaderHook.dll">
+			<Link>ExtremeDumper.LoaderHook.dll</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>costura64\ExtremeDumper.LoaderHook.dll</TargetPath>
+		</Content>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="dnlib" Version="3.4.0" />
+		<PackageReference Include="Microsoft.Diagnostics.Runtime" Version="1.1.142101" />
+		<PackageReference Include="NativeSharp-lib" Version="3.0.0.1" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\ExtremeDumper\ExtremeDumper.csproj" />
+		<ProjectReference Include="..\ExtremeDumper.AntiAntiDump\ExtremeDumper.AntiAntiDump.csproj" />
+	</ItemGroup>
+	<Import Project="..\ExtremeDumper.Common.props" />
+</Project>

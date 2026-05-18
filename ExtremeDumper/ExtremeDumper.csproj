@@ -9,20 +9,28 @@
 		<OutputType>Exe</OutputType>
 		<OutputPath>..\bin\$(Configuration)</OutputPath>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
 	</PropertyGroup>
 	<ItemGroup>
-		<EmbeddedResource Include="..\ExtremeDumper.LoaderHook\bin\Win32\$(Configuration)\ExtremeDumper.LoaderHook.dll" Link="costura32\ExtremeDumper.LoaderHook.dll" />
-		<EmbeddedResource Include="..\ExtremeDumper.LoaderHook\bin\x64\$(Configuration)\ExtremeDumper.LoaderHook.dll" Link="costura64\ExtremeDumper.LoaderHook.dll" />
+		<EmbeddedResource Include="..\ExtremeDumper.LoaderHook\bin\Win32\$(Configuration)\ExtremeDumper.LoaderHook.dll" Link="costura-win-x86\ExtremeDumper.LoaderHook.dll" />
+		<EmbeddedResource Include="..\ExtremeDumper.LoaderHook\bin\x64\$(Configuration)\ExtremeDumper.LoaderHook.dll" Link="costura-win-x64\ExtremeDumper.LoaderHook.dll" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Costura.Fody" Version="4.1.0" />
+		<PackageReference Include="Costura.Fody" Version="6.2.0" PrivateAssets="all" />
 		<PackageReference Include="dnlib" Version="3.4.0" />
 		<PackageReference Include="Microsoft.Diagnostics.Runtime" Version="1.1.142101" />
+		<PackageReference Include="Mono.Cecil" Version="0.11.0" PrivateAssets="all" />
 		<PackageReference Include="NativeSharp-lib" Version="3.0.0.1" />
 		<PackageReference Include="Ookii.Dialogs.WinForms" Version="4.0.0" />
+		<PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\ExtremeDumper.AntiAntiDump\ExtremeDumper.AntiAntiDump.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+			<_Parameter1>ExtremeDumper.CLI</_Parameter1>
+		</AssemblyAttribute>
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Update="Forms\Resources.Designer.cs">

@@ -218,6 +218,9 @@ rcf/
 AppPackages/
 BundleArtifacts/
 Package.StoreAssociation.xml
+
+# Local agent notes
+/AGENTS.md
 _pkginfo.txt
 *.appx
 *.appxbundle
@@ -364,5 +367,3 @@ FodyWeavers.xsd
 
 # wwh1004
 launchSettings.json
-/AGENTS.md
-

@@ -1,11 +1,9 @@
 # ExtremeDumper [![Build status](https://ci.appveyor.com/api/projects/status/f6kyx4yv68lwain0?svg=true)](https://ci.appveyor.com/project/wwh1004/extremedumper)
 .NET Assembly Dumper
 
-[中文README](./README.zh-CN.md)
-
 ## Features
-* List all processes and highlight .NET processes
-* List all modules in a process and highlight .NET modules
+* List all processes
+* List all modules in a process and highlight managed modules
 * Walk memory pages and dump all valid .NET assemblies
 * Dump specified module in modules view
 * Inject .NET assembly into any process
@@ -28,7 +26,7 @@ This page show all modules in select process and you can just view .NET modules 
 ### View Exported Functions
 ![](./Images/ExportFunctionView.png)
 
-This page show exported functions for given module.
+This page shou exported functions for unmanaged dlls.
 
 ### Inject .NET Assemblies
 ![](./Images/InjectManagedDll.png)
@@ -61,6 +59,29 @@ Rename 'ExtremeDumper.LoaderHook.dll' to 'version.dll' and put it in the root of
 
 #### Principle
 Loader hook will hook 'clr!AssemblyNative::LoadImage' at startup of the application. When any .NET assembly is loaded by apis like 'Assembly.Load(byte[])', loader hook will save raw byte array to disk.
+
+## CLI Enhancements (v4.0.0.1 local improvements)
+`ExtremeDumper.CLI.exe` now includes:
+- `--json` output for all commands.
+- Detailed exit codes for automation.
+- Process selectors: `--pid`, `--name`, `--contains`.
+- Batch dump mode: `--pid-file`, `--process-list`, `--all-dotnet`.
+- Output templating with placeholders: `{pid}`, `{process}`, `{module}`, `{address}`, `{ext}`, `{timestamp}`.
+- Advanced logging controls: `--quiet`, `--log-file`, `--verbose-level`.
+- Advanced module filters: `--domain`, `--clr`, `--in-memory`, `--path-contains`, `--min-size`, `--max-size`.
+- Injector entrypoint discovery: `inject --list-entrypoints`.
+- Loader hook arguments and working directory support: `loader-hook --args --workdir`.
+- `doctor` command for quick environment diagnostics.
+
+Quick examples:
+```powershell
+ExtremeDumper.CLI.exe --json ps --dotnet-only
+ExtremeDumper.CLI.exe dump-process --all-dotnet --output .\Dumps --output-template "{process}_{pid}_{timestamp}"
+ExtremeDumper.CLI.exe modules --name "app.exe" --dotnet-only --in-memory true
+ExtremeDumper.CLI.exe inject --pid 1234 --assembly .\Payload.dll --list-entrypoints
+ExtremeDumper.CLI.exe loader-hook --assembly .\Target.exe --args "--mode test" --workdir C:\Temp
+ExtremeDumper.CLI.exe --json doctor
+```
 
 ## Downloads
 GitHub: [Latest release](https://github.com/wwh1004/ExtremeDumper/releases/latest/download/ExtremeDumper.zip)

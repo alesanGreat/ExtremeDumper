@@ -25,4 +25,8 @@ HRESULT WINAPI LoaderHookMonitorLoop(_In_ PLDHK_MONITOR_INFO pInfo);
 _Success_(SUCCEEDED(return))
 HRESULT WINAPI LoaderHookCreateProcess(_In_ PCWSTR applicationName, _Inout_opt_ PWSTR commandLine);
 
+// Create process with loader hook and explicit working directory
+_Success_(SUCCEEDED(return))
+HRESULT WINAPI LoaderHookCreateProcessEx(_In_ PCWSTR applicationName, _Inout_opt_ PWSTR commandLine, _In_opt_ PCWSTR currentDirectory);
+
 EXTERN_C_END

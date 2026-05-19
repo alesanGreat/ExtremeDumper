@@ -11,6 +11,25 @@ build_script:
     msbuild "C:\projects\extremedumper\ExtremeDumper.sln" /p:Configuration=Release /p:Platform=x64 /verbosity:normal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
     msbuild "C:\projects\extremedumper\ExtremeDumper.sln" /p:Configuration=Release /p:Platform="Any CPU" /verbosity:normal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+test_script:
+- ps: >-
+    $ErrorActionPreference = 'Stop';
+
+    & .\bin\Release\ExtremeDumper.CLI.exe --json help;
+
+    if ($LASTEXITCODE -ne 0) { throw "CLI help failed with exit code $LASTEXITCODE" };
+
+    & .\bin\Release\ExtremeDumper.CLI.exe ps --json;
+
+    if ($LASTEXITCODE -ne 0) { throw "CLI list-processes failed with exit code $LASTEXITCODE" };
+
+    & .\bin\Release\ExtremeDumper.CLI.exe dump-module --json;
+
+    if ($LASTEXITCODE -ne 2) { throw "CLI validation exit code changed. Expected 2, got $LASTEXITCODE" };
+
+    & .\bin\Release\ExtremeDumper.CLI.exe --verbose-level 3 --json help;
+
+    if ($LASTEXITCODE -ne 0) { throw "CLI verbose-level handling failed with exit code $LASTEXITCODE" }
 after_build:
 - cmd: 7z a bin\Release\ExtremeDumper.zip .\bin\Release\*.exe
 artifacts:

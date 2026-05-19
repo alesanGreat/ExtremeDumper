@@ -97,14 +97,24 @@ BOOL InstallHook(PVOID* ppPointer, PVOID pDetour) {
 
 _Success_(SUCCEEDED(return))
 HRESULT WINAPI LoaderHookCreateProcess(_In_ PCWSTR applicationName, _Inout_opt_ PWSTR commandLine) {
+	return LoaderHookCreateProcessEx(applicationName, commandLine, NULL);
+}
+
+_Success_(SUCCEEDED(return))
+HRESULT WINAPI LoaderHookCreateProcessEx(_In_ PCWSTR applicationName, _Inout_opt_ PWSTR commandLine, _In_opt_ PCWSTR currentDirectoryOverride) {
 	if (applicationName == NULL)
 		return E_INVALIDARG;
 
 	WCHAR szFullExe[MAX_PATH] = { 0 };
 	GetFullPathName(applicationName, MAX_PATH, szFullExe, NULL);
 	WCHAR currentDirectory[MAX_PATH] = { 0 };
-	wcscpy_s(currentDirectory, MAX_PATH, szFullExe);
-	PathRemoveFileSpec(currentDirectory);
+	if (currentDirectoryOverride && currentDirectoryOverride[0] != L'\0') {
+		wcscpy_s(currentDirectory, MAX_PATH, currentDirectoryOverride);
+	}
+	else {
+		wcscpy_s(currentDirectory, MAX_PATH, szFullExe);
+		PathRemoveFileSpec(currentDirectory);
+	}
 
 	//SECURITY_ATTRIBUTES securityAttributes = { 0 };
 	//securityAttributes.nLength = sizeof(SECURITY_ATTRIBUTES);

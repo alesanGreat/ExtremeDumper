@@ -1,3 +1,4 @@
 EXPORTS
 	LoaderHookMonitorLoop
 	LoaderHookCreateProcess
+	LoaderHookCreateProcessEx

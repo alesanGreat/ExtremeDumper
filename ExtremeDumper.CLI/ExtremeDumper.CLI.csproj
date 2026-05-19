@@ -15,12 +15,12 @@
 		<Prefer32Bit>false</Prefer32Bit>
 	</PropertyGroup>
 	<ItemGroup>
-		<Content Include="..\ExtremeDumper.LoaderHook\bin\Win32\$(Configuration)\ExtremeDumper.LoaderHook.dll">
+		<Content Include="..\ExtremeDumper.LoaderHook\bin\Win32\$(Configuration)\ExtremeDumper.LoaderHook.dll" Condition="Exists('..\ExtremeDumper.LoaderHook\bin\Win32\$(Configuration)\ExtremeDumper.LoaderHook.dll')">
 			<Link>ExtremeDumper.LoaderHook.dll</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<TargetPath>costura32\ExtremeDumper.LoaderHook.dll</TargetPath>
 		</Content>
-		<Content Include="..\ExtremeDumper.LoaderHook\bin\x64\$(Configuration)\ExtremeDumper.LoaderHook.dll">
+		<Content Include="..\ExtremeDumper.LoaderHook\bin\x64\$(Configuration)\ExtremeDumper.LoaderHook.dll" Condition="Exists('..\ExtremeDumper.LoaderHook\bin\x64\$(Configuration)\ExtremeDumper.LoaderHook.dll')">
 			<Link>ExtremeDumper.LoaderHook.dll</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<TargetPath>costura64\ExtremeDumper.LoaderHook.dll</TargetPath>

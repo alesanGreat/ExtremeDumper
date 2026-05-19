@@ -12,8 +12,8 @@
 		<GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
 	</PropertyGroup>
 	<ItemGroup>
-		<EmbeddedResource Include="..\ExtremeDumper.LoaderHook\bin\Win32\$(Configuration)\ExtremeDumper.LoaderHook.dll" Link="costura-win-x86\ExtremeDumper.LoaderHook.dll" />
-		<EmbeddedResource Include="..\ExtremeDumper.LoaderHook\bin\x64\$(Configuration)\ExtremeDumper.LoaderHook.dll" Link="costura-win-x64\ExtremeDumper.LoaderHook.dll" />
+		<EmbeddedResource Include="..\ExtremeDumper.LoaderHook\bin\Win32\$(Configuration)\ExtremeDumper.LoaderHook.dll" Link="costura-win-x86\ExtremeDumper.LoaderHook.dll" Condition="Exists('..\ExtremeDumper.LoaderHook\bin\Win32\$(Configuration)\ExtremeDumper.LoaderHook.dll')" />
+		<EmbeddedResource Include="..\ExtremeDumper.LoaderHook\bin\x64\$(Configuration)\ExtremeDumper.LoaderHook.dll" Link="costura-win-x64\ExtremeDumper.LoaderHook.dll" Condition="Exists('..\ExtremeDumper.LoaderHook\bin\x64\$(Configuration)\ExtremeDumper.LoaderHook.dll')" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Costura.Fody" Version="6.2.0" PrivateAssets="all" />

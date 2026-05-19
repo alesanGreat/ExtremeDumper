@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtremeDumper", "ExtremeDumper\ExtremeDumper.csproj", "{BA1D5A3E-330E-4D82-BFF5-58B6CF52726C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A0553CA6-87FF-4A7F-8452-8FD5C6B6525F} = {A0553CA6-87FF-4A7F-8452-8FD5C6B6525F}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtremeDumper-x86", "ExtremeDumper-x86\ExtremeDumper-x86.csproj", "{F4ED1869-89DC-4A43-A2D7-0766533EB2BA}"
 EndProject

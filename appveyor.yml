@@ -4,6 +4,7 @@ install:
 - cmd: git submodule update --init --recursive
 before_build:
 - cmd: appveyor-retry nuget restore
+- cmd: dotnet restore "C:\projects\extremedumper\ExtremeDumper.CLI\ExtremeDumper.CLI.csproj"
 build_script:
 - cmd: >-
     msbuild "C:\projects\extremedumper\ExtremeDumper.sln" /p:Configuration=Release /p:Platform=x86 /verbosity:normal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"

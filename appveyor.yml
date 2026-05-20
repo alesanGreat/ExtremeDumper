@@ -4,7 +4,7 @@ install:
 - cmd: git submodule update --init --recursive
 before_build:
 - cmd: appveyor-retry nuget restore
-- cmd: dotnet restore "C:\projects\extremedumper\ExtremeDumper.CLI\ExtremeDumper.CLI.csproj"
+- cmd: dotnet restore "C:\projects\extremedumper\ExtremeDumper.CLI\ExtremeDumper.CLI.csproj" -p:Platform=AnyCPU
 build_script:
 - cmd: >-
     msbuild "C:\projects\extremedumper\ExtremeDumper.sln" /p:Configuration=Release /p:Platform=x86 /verbosity:normal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
@@ -13,7 +13,7 @@ build_script:
 
     msbuild "C:\projects\extremedumper\ExtremeDumper.sln" /p:Configuration=Release /p:Platform="Any CPU" /verbosity:normal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
-    msbuild "C:\projects\extremedumper\ExtremeDumper.CLI\ExtremeDumper.CLI.csproj" /p:Configuration=Release /p:Platform="Any CPU" /verbosity:normal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+    msbuild "C:\projects\extremedumper\ExtremeDumper.CLI\ExtremeDumper.CLI.csproj" /p:Configuration=Release /p:Platform=AnyCPU /verbosity:normal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 test_script:
 - ps: >-
     $ErrorActionPreference = 'Stop';

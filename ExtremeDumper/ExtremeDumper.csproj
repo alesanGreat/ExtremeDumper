@@ -25,6 +25,9 @@
 		<ProjectReference Include="..\ExtremeDumper.AntiAntiDump\ExtremeDumper.AntiAntiDump.csproj" />
 	</ItemGroup>
 	<ItemGroup>
+		<InternalsVisibleTo Include="ExtremeDumper.CLI" />
+	</ItemGroup>
+	<ItemGroup>
 		<Compile Update="Forms\Resources.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>

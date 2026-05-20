@@ -29,6 +29,7 @@ public static class Program {
 
 	static readonly HashSet<string> GlobalFlags = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
 		"--json",
+		"--json-with-logs",
 		"--quiet",
 		"--verbose"
 	};
@@ -111,6 +112,12 @@ public static class Program {
 		var dict = ParseArgs(args, 0);
 		jsonOutput = dict.ContainsKey("--json");
 		quietOutput = dict.ContainsKey("--quiet");
+
+		// When emitting JSON, silence the global Logger so [Info]/[Warning]/[Error] lines
+		// don't pollute stdout and break downstream JSON parsing. Logs still go to
+		// --log-file if provided. Pass --json-with-logs to keep stdout logs anyway.
+		if (jsonOutput && !dict.ContainsKey("--json-with-logs"))
+			Tool.Logging.Logger.ExternImpl = Tool.Logging.NullLogger.Instance;
 
 		if (dict.ContainsKey("--verbose"))
 			Logger.Level = Tool.Logging.LogLevel.Verbose3;
@@ -354,13 +361,11 @@ Output-template placeholders:
 			_ => throw new CliException(ExitCode.InvalidArguments, "--type debe ser unmanaged, managed o aad.")
 		};
 
-		IEnumerable<ExtremeDumper.Diagnostics.ModuleInfo> modules;
-		if (providerType == ModulesProviderType.ManagedAAD) {
-			modules = AADExtensions.EnumerateAADClients(pid).SelectMany(c => c.EnumerateModules()).Cast<ExtremeDumper.Diagnostics.ModuleInfo>();
-		}
-		else {
-			modules = ModulesProviderFactory.Create(pid, providerType).EnumerateModules();
-		}
+		// NOTE: AADModulesProvider already yields ExtremeDumper.Diagnostics.DotNetModuleInfo (with ImageBase resolved
+		// via client.GetPEInfo). The previous direct cast of AADClient.EnumerateModules() returned
+		// ExtremeDumper.AntiAntiDump.ModuleInfo, which is a different type and threw InvalidCastException.
+		IEnumerable<ExtremeDumper.Diagnostics.ModuleInfo> modules =
+			ModulesProviderFactory.Create(pid, providerType).EnumerateModules();
 
 		var filteredModules = modules.Where(m => ModuleMatchesFilters(m, dotnetOnly, domainFilter, clrFilter, inMemoryFilter, pathFilter, minSize, maxSize)).ToArray();
 

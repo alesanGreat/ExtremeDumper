@@ -3,7 +3,7 @@ namespace ExtremeDumper.Injecting;
 /// <summary>
 /// 注入时使用的CLR版本
 /// </summary>
-enum InjectionClrVersion {
+public enum InjectionClrVersion {
 	///// <summary>
 	///// 自动选择，由要注入的程序集本身决定
 	///// </summary>

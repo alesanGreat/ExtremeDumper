@@ -321,6 +321,59 @@ sealed class AntiAntiDumper : DumperBase {
 	}
 
 	public override int DumpProcess(string directoryPath) {
-		throw new NotSupportedException();
+		var originalFileCache = new System.Collections.Concurrent.ConcurrentDictionary<string, byte[]>(StringComparer.OrdinalIgnoreCase);
+		int count = 0;
+		var clients = AADExtensions.EnumerateAADClients(process.Id);
+		foreach (var client in clients) {
+			foreach (var module in client.EnumerateModules()) {
+				PEInfo peInfo;
+				try {
+					peInfo = client.GetPEInfo(module);
+				}
+				catch (Exception ex) {
+					ExtremeDumper.Logging.Logger.Warning($"Can't get PE info for module '{module.AssemblyName}': {ex.Message}");
+					continue;
+				}
+				if (peInfo.IsInvalid)
+					continue;
+
+				var layout = peInfo.LoadedLayout;
+				if (layout.IsInvalid)
+					continue;
+				nuint moduleHandle = (nuint)layout.ImageBase;
+
+				string fileName = EnsureValidFileName(string.IsNullOrEmpty(module.AssemblyName) ? $"module_{moduleHandle:X}.dll" : module.AssemblyName);
+				if (!fileName.Contains("."))
+					fileName += ".dll";
+				fileName = EnsureNoRepeatFileName(directoryPath, fileName);
+				string filePath = Path.Combine(directoryPath, fileName);
+
+				try {
+					if (!DumpModule(moduleHandle, ImageLayout.Memory, filePath)) {
+						ExtremeDumper.Logging.Logger.Warning($"Can't dump module '{module.AssemblyName}' @ 0x{moduleHandle:X}");
+						continue;
+					}
+				}
+				catch (Exception ex) {
+					ExtremeDumper.Logging.Logger.Warning($"Exception dumping '{module.AssemblyName}' @ 0x{moduleHandle:X}: {ex.Message}");
+					continue;
+				}
+
+				try {
+					var data = File.ReadAllBytes(filePath);
+					if (BuiltInAssemblyHelper.IsBuiltInAssembly(data)) {
+						File.Delete(filePath);
+						continue;
+					}
+				}
+				catch {
+					// keep the file if we can't classify it
+				}
+
+				ExtremeDumper.Logging.Logger.Info($"Dumped '{module.AssemblyName}' @ 0x{moduleHandle:X} -> {filePath}");
+				count++;
+			}
+		}
+		return count;
 	}
 }

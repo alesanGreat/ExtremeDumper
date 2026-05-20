@@ -11,6 +11,8 @@ build_script:
     msbuild "C:\projects\extremedumper\ExtremeDumper.sln" /p:Configuration=Release /p:Platform=x64 /verbosity:normal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
     msbuild "C:\projects\extremedumper\ExtremeDumper.sln" /p:Configuration=Release /p:Platform="Any CPU" /verbosity:normal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+
+    msbuild "C:\projects\extremedumper\ExtremeDumper.CLI\ExtremeDumper.CLI.csproj" /p:Configuration=Release /p:Platform="Any CPU" /verbosity:normal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 test_script:
 - ps: >-
     $ErrorActionPreference = 'Stop';

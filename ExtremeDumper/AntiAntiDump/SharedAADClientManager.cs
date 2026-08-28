@@ -23,7 +23,7 @@ static class SharedAADClientManager {
 
 	static List<AADClients> GetAADClients_NoLock(uint processId, int timeout) {
 		if (cache.TryGetValue(processId, out var clients)) {
-			if (clients.Count > 0 && clients.All(t => t.Any()) && clients.First().First().IsConnected) {
+			if (clients.First().First().IsConnected) {
 				Debug2.Assert(clients.All(t => t.All(t => t.IsConnected)));
 				return clients;
 			}
@@ -44,8 +44,6 @@ static class SharedAADClientManager {
 			clients.Add(SetupAADClients(processId, timeout, InjectionClrVersion.V4));
 		if (dotNetProcessInfo.HasCoreCLR)
 			Logger.Warning("Currently AntiAntiDump mode doesn't support CoreCLR");
-		if (clients.Count == 0)
-			throw new InvalidOperationException("No supported CLR runtime was found for AntiAntiDump mode (only CLR v2/v4 are supported).");
 		cache.Add(processId, clients);
 		return clients;
 	}

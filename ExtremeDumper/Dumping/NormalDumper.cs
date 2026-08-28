@@ -34,8 +34,7 @@ sealed unsafe class NormalDumper : DumperBase {
 	public override int DumpProcess(string directoryPath) {
 		int count = 0;
 		var originalFileCache = new ConcurrentDictionary<string, byte[]>(StringComparer.OrdinalIgnoreCase);
-		var pageInfos = GetSafePageInfos();
-		Parallel.ForEach(pageInfos, pageInfo => {
+		Parallel.ForEach(process.EnumeratePageInfos(), pageInfo => {
 			if (!IsValidPage(pageInfo))
 				return;
 			var page = new byte[Math.Min((int)pageInfo.Size, 0x40000000)];
@@ -83,23 +82,6 @@ sealed unsafe class NormalDumper : DumperBase {
 		});
 		GC.Collect();
 		return count;
-	}
-
-	PageInfo[] GetSafePageInfos() {
-		var pageInfos = new ConcurrentBag<PageInfo>();
-		using var enumerator = process.EnumeratePageInfos().GetEnumerator();
-		while (true) {
-			try {
-				if (!enumerator.MoveNext())
-					break;
-				pageInfos.Add(enumerator.Current);
-			}
-			catch (OverflowException ex) {
-				Logger.Warning($"Enumerating process pages stopped early due to overflow: {ex.Message}");
-				break;
-			}
-		}
-		return pageInfos.ToArray();
 	}
 
 	static bool IsValidPage(PageInfo pageInfo) {
